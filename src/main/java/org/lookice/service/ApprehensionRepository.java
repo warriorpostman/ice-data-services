@@ -62,4 +62,14 @@ public interface ApprehensionRepository extends JpaRepository<Apprehension, Inte
     ORDER BY COUNT(a) desc
     """)
     List<Object[]> apprehensionsByCriminality();
+
+    @Query("""
+    SELECT a.citizenshipCountry,
+    COUNT(a.citizenshipCountry) 
+    FROM Apprehension a 
+    WHERE a.citizenshipCountry is NOT NULL 
+    GROUP BY a.citizenshipCountry
+    ORDER BY COUNT(a) desc
+    """)
+    List<Object[]> apprehensionsByCitizenshipCountry();
 }

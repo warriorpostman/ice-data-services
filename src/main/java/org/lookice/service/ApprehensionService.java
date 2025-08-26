@@ -46,6 +46,7 @@ public class ApprehensionService {
         apprehensionSummary.apprehensionsByState = apprehensionRepository.stateCounts();
         apprehensionSummary.apprehensionsByGender = apprehensionRepository.apprehensionsCountedByGender();
         apprehensionSummary.apprehensionsByCriminality = apprehensionRepository.apprehensionsByCriminality();
+        apprehensionSummary.apprehensionsByCitizenshipCountry = apprehensionRepository.apprehensionsByCitizenshipCountry();
         return apprehensionSummary;
     }
 
