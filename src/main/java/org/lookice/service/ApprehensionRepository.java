@@ -16,14 +16,6 @@ public interface ApprehensionRepository extends JpaRepository<Apprehension, Inte
     @Query("SELECT DISTINCT a.apprehensionState FROM Apprehension a WHERE a.apprehensionState IS NOT NULL")
     List<String> findDistinctStates();
 
-//    @Query(value = """
-//        SELECT *
-//        FROM ice_data.apprehensions
-//        WHERE apprehension_state IS NOT NULL
-//          AND apprehension_criminality IS NOT NULL
-//          AND apprehension_state = :state
-//        LIMIT 100
-//        """, nativeQuery = true)
     @Query("""
     SELECT a 
     FROM Apprehension a
@@ -31,5 +23,43 @@ public interface ApprehensionRepository extends JpaRepository<Apprehension, Inte
       AND a.apprehensionCriminality IS NOT NULL
       AND LOWER(a.apprehensionState) = LOWER(:state)
     """)
-    List<Apprehension> findTop100ByState(@Param("state") String state, Pageable pageable);
+    List<Apprehension> findByState(@Param("state") String state, Pageable pageable);
+
+//    @Query(value = """
+//            select
+//              apprehension_state,
+//              COUNT(apprehension_state)
+//            from apprehensions
+//            group by
+//              apprehension_state
+//            order by
+//              COUNT(apprehension_state) DESC;
+//            """, nativeQuery = true)
+    @Query("""
+    SELECT a.apprehensionState, 
+    COUNT(a.apprehensionState) FROM Apprehension a 
+    WHERE a.apprehensionState is NOT NULL 
+    GROUP BY a.apprehensionState
+    ORDER BY COUNT(a) desc
+    """)
+    List<Object[]> stateCounts();
+
+    @Query("""
+    SELECT a.gender, 
+    COUNT(a.gender) FROM Apprehension a 
+    WHERE a.gender is NOT NULL 
+    GROUP BY a.gender
+    ORDER BY COUNT(a) desc
+    """)
+    List<Object[]> apprehensionsCountedByGender();
+
+    @Query("""
+    SELECT a.apprehensionCriminality,
+    COUNT(a.apprehensionCriminality) 
+    FROM Apprehension a 
+    WHERE a.apprehensionCriminality is NOT NULL 
+    GROUP BY a.apprehensionCriminality
+    ORDER BY COUNT(a) desc
+    """)
+    List<Object[]> apprehensionsByCriminality();
 }

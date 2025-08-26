@@ -1,45 +1,67 @@
 package org.lookice.service;
 
 import org.lookice.model.Apprehension;
+import org.lookice.model.ApprehensionSummary;
+import org.lookice.model.Detainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+// RENAME IceDataEntityService
 @Service
 public class ApprehensionService {
 
-    private final Map<Integer, Apprehension> apprehensions = new HashMap<>();
+//    private final Map<Integer, Apprehension> apprehensions = new HashMap<>();
+
+    @Autowired
+    private DetainersRepository detainerRepository;
 
     @Autowired
     private ApprehensionRepository apprehensionRepository;
 
     public ApprehensionService() {
-        // Seed with some sample data
-//        apprehensions.put("1", new Apprehension("1", "John Doe", "New York", "In Custody"));
-//        apprehensions.put("2", new Apprehension("2", "Jane Smith", "Los Angeles", "Pending"));
-    }
-
-    public List<Apprehension> getAll() {
-        return new ArrayList<>(apprehensions.values());
     }
 
     public List<String> getDistinctStates() {
         return apprehensionRepository.findDistinctStates();
     }
 
-    public Apprehension getById(String id) {
-        return apprehensions.get(id);
+    public List<Apprehension> getByState(String state, PageRequest pageRequest) {
+        List<Apprehension> byState = apprehensionRepository.findByState(state, pageRequest);
+//        byState.forEach(val -> System.out.println(val.));
+        return byState;
     }
 
-    public List<Apprehension> getByState(String state) {
-        return apprehensionRepository.findTop100ByState(state, PageRequest.of(0,100));
+    public List<Detainer> getDetainersByState(String state, PageRequest pageRequest) {
+        List<Detainer> byState = detainerRepository.findByState(state, pageRequest);
+//        System.out.println("hello?" + byState.stream().count());
+//        byState.stream().map(val -> val.);
+        return byState;
     }
 
-    public Apprehension add(Apprehension apprehension) {
-        apprehensions.put(apprehension.getArrestId(), apprehension);
-        return apprehension;
+    public ApprehensionSummary getApprehensionSummary() {
+        ApprehensionSummary apprehensionSummary = new ApprehensionSummary();
+        apprehensionSummary.apprehensionsByState = apprehensionRepository.stateCounts();
+        apprehensionSummary.apprehensionsByGender = apprehensionRepository.apprehensionsCountedByGender();
+        apprehensionSummary.apprehensionsByCriminality = apprehensionRepository.apprehensionsByCriminality();
+        return apprehensionSummary;
     }
+
+//    private Map<String, Long> toMap(List<Object[]> results) {
+//        return results.stream()
+//                .map(val -> {
+//                    // TODO: Need to preserve order here?
+//                    System.out.println(val[0]);
+//                    return val;
+//                })
+//                .collect(Collectors.toList()));
+//(
+//                        row -> (String) row[0],
+//                        row -> (Long) row[1]
+//                ));
+//    }
+
 }
 
