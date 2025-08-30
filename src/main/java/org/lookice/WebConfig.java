@@ -18,7 +18,7 @@ public class WebConfig {
                         .allowedOrigins(
                                 "http://localhost:3000",
                                 "http://lookice-frontend.s3-website.us-east-2.amazonaws.com",
-                                "http://lookice.wholestepsoftware.com"
+                                "https://lookice.wholestepsoftware.com"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
