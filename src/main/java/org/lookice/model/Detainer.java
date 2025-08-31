@@ -2,10 +2,13 @@ package org.lookice.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "detainers", schema = "ice_data")
-@Data
+@Getter
+@Setter
 public class Detainer {
 
     @Id

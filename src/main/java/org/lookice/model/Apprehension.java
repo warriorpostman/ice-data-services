@@ -2,10 +2,15 @@ package org.lookice.model;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "apprehensions", schema = "ice_data")
+@Getter
+@Setter
 public class Apprehension {
 
     @Id
