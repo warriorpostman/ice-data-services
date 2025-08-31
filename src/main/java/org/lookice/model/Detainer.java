@@ -67,8 +67,8 @@ public class Detainer {
     @Column(name = "entry_status")
     private String entryStatus;
 
-    @Column(name = "most_serious_conviction_msc_charge")
-    private String mostSeriousConvictionMscCharge;
+    @Column(name = "msc_charge")
+    private String mscCharge;
 
     @Column(name = "msc_sentence_days")
     private Integer mscSentenceDays;
