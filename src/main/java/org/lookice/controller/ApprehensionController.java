@@ -47,7 +47,10 @@ public class ApprehensionController {
     @GetMapping(value = "/detainers", params="state")
     public List<Detainer> getByDetainersState(@RequestParam String state, @RequestParam int start, @RequestParam int end) {
         System.out.println("start=" + start);
-        return apprehensionService.getDetainersByState(state, PageRequest.of(start, end));
+        List<Detainer> detainersByState = apprehensionService.getDetainersByState(state, PageRequest.of(start, end));
+        System.out.println(detainersByState.get(0).getDetainerId());
+        System.out.println(detainersByState.get(1).getDetainerId());
+        return detainersByState;
     }
 
 //    @GetMapping("/{id}")
