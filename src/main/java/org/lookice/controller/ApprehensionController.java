@@ -19,11 +19,6 @@ public class ApprehensionController {
         this.apprehensionService = apprehensionService;
     }
 
-//    @GetMapping
-//    public List<Apprehension> getAll() {
-//        return apprehensionService.getAll();
-//    }
-
     @GetMapping("/apprehensions/lists/{type}")
     public List<String> getList(@PathVariable String type) {
         if ("state".equalsIgnoreCase(type)) {
@@ -48,8 +43,9 @@ public class ApprehensionController {
     public List<Detainer> getByDetainersState(@RequestParam String state, @RequestParam int start, @RequestParam int end) {
         System.out.println("start=" + start);
         List<Detainer> detainersByState = apprehensionService.getDetainersByState(state, PageRequest.of(start, end));
-        System.out.println(detainersByState.get(0).getDetainerId());
-        System.out.println(detainersByState.get(1).getDetainerId());
+//        System.out.println(detainersByState.get(0).getDetainerId());
+//        System.out.println(detainersByState.get(1).getDetainerId());
+//        System.out.println(detainersByState.get(2).getDetainerId());
         return detainersByState;
     }
 
