@@ -29,9 +29,9 @@ public class ApprehensionController {
     }
 
     @GetMapping(value = "/apprehensions", params="state")
-    public List<Apprehension> getByState(@RequestParam String state, @RequestParam int start, @RequestParam int end) {
-        System.out.println("start=" + start);
-        return apprehensionService.getByState(state, PageRequest.of(start, end));
+    public List<Apprehension> getByState(@RequestParam String state, @RequestParam int pageNumber) {
+        int PAGE_SIZE = 10;
+        return apprehensionService.getByState(state, PageRequest.of(pageNumber, PAGE_SIZE));
     }
 
     @GetMapping(value = "/apprehensions/summary")
@@ -40,12 +40,9 @@ public class ApprehensionController {
     }
 
     @GetMapping(value = "/detainers", params="state")
-    public List<Detainer> getByDetainersState(@RequestParam String state, @RequestParam int start, @RequestParam int end) {
-        System.out.println("start=" + start);
-        List<Detainer> detainersByState = apprehensionService.getDetainersByState(state, PageRequest.of(start, end));
-//        System.out.println(detainersByState.get(0).getDetainerId());
-//        System.out.println(detainersByState.get(1).getDetainerId());
-//        System.out.println(detainersByState.get(2).getDetainerId());
+    public List<Detainer> getByDetainersState(@RequestParam String state, @RequestParam int pageNumber) {
+        int PAGE_SIZE = 10;
+        List<Detainer> detainersByState = apprehensionService.getDetainersByState(state, PageRequest.of(pageNumber, PAGE_SIZE));
         return detainersByState;
     }
 
