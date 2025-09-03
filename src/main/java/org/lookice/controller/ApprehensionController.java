@@ -5,6 +5,7 @@ import org.lookice.model.ApprehensionSummary;
 import org.lookice.model.Detainer;
 import org.lookice.service.ApprehensionService;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +32,15 @@ public class ApprehensionController {
     @GetMapping(value = "/apprehensions", params="state")
     public List<Apprehension> getByState(@RequestParam String state, @RequestParam int pageNumber) {
         int PAGE_SIZE = 10;
-        return apprehensionService.getByState(state, PageRequest.of(pageNumber, PAGE_SIZE));
+        long start = System.nanoTime();
+        List<Apprehension> apprehensionsByState = apprehensionService.getByState(
+                state,
+                PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("apprehensionDate").ascending().and(Sort.by("arrestId").ascending()))
+        );
+        System.out.println(apprehensionsByState.get(0).getApprehensionDate());
+        long end = System.nanoTime();
+        System.out.println( "time retrieve apprehensions: " + ((end - start)/10000000));
+        return apprehensionsByState;
     }
 
     @GetMapping(value = "/apprehensions/summary")
@@ -42,7 +51,12 @@ public class ApprehensionController {
     @GetMapping(value = "/detainers", params="state")
     public List<Detainer> getByDetainersState(@RequestParam String state, @RequestParam int pageNumber) {
         int PAGE_SIZE = 10;
-        List<Detainer> detainersByState = apprehensionService.getDetainersByState(state, PageRequest.of(pageNumber, PAGE_SIZE));
+        long start = System.nanoTime();
+        List<Detainer> detainersByState = apprehensionService.getDetainersByState(state,
+                PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("detainerPrepareDate").ascending().and(Sort.by("detainerId").ascending()))
+        );
+        long end = System.nanoTime();
+        System.out.println( "time retrieve detainers: " + ((end - start)/10000000));
         return detainersByState;
     }
 
