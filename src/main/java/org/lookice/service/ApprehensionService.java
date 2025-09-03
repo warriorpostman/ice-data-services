@@ -5,7 +5,6 @@ import org.lookice.model.ApprehensionSummary;
 import org.lookice.model.Detainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -13,8 +12,6 @@ import java.util.*;
 // RENAME IceDataEntityService
 @Service
 public class ApprehensionService {
-
-//    private final Map<Integer, Apprehension> apprehensions = new HashMap<>();
 
     @Autowired
     private DetainersRepository detainerRepository;
@@ -31,14 +28,11 @@ public class ApprehensionService {
 
     public List<Apprehension> getByState(String state, PageRequest pageRequest) {
         List<Apprehension> byState = apprehensionRepository.findByState(state, pageRequest);
-//        byState.forEach(val -> System.out.println(val.));
         return byState;
     }
 
     public List<Detainer> getDetainersByState(String state, PageRequest pageRequest) {
         List<Detainer> byState = detainerRepository.findByState(state, pageRequest);
-//        System.out.println("hello?" + byState.stream().count());
-//        byState.stream().map(val -> val.);
         return byState;
     }
 
