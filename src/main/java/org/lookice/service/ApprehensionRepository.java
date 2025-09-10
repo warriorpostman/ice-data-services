@@ -25,6 +25,8 @@ public interface ApprehensionRepository extends JpaRepository<Apprehension, Inte
     """)
     List<Apprehension> findByState(@Param("state") String state, Pageable pageable);
 
+    long countByApprehensionState(String state);
+
 //    @Query(value = """
 //            select
 //              apprehension_state,
@@ -72,4 +74,16 @@ public interface ApprehensionRepository extends JpaRepository<Apprehension, Inte
     ORDER BY COUNT(a) desc
     """)
     List<Object[]> apprehensionsByCitizenshipCountry();
+
+    @Query(value = """
+    SELECT
+        TO_CHAR(apprehension_date, 'YYYY-MM') AS year_month,
+        COUNT(*) AS apprehension_count
+    FROM ice_data.apprehensions
+    WHERE apprehension_date IS NOT NULL
+    GROUP BY TO_CHAR(apprehension_date, 'YYYY-MM')
+    ORDER BY year_month
+    """,
+    nativeQuery = true)
+    List<Object[]> apprehensionCountByMonth();
 }

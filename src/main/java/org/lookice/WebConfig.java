@@ -17,7 +17,7 @@ public class WebConfig {
                 registry.addMapping("/**") // allow all endpoints
                         .allowedOrigins(
                                 "http://localhost:3000",
-                                "https://lookice.wholestepsoftware.com"
+                                "https://lookice.zubinweb.com"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");

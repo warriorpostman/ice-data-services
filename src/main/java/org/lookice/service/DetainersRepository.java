@@ -21,4 +21,6 @@ public interface DetainersRepository extends JpaRepository<Detainer, Integer> {
     """)
     List<Detainer> findByState(@Param("state") String state, Pageable pageable);
 
+    long countByFacilityState(String state);
+
 }

@@ -26,14 +26,25 @@ public class ApprehensionService {
         return apprehensionRepository.findDistinctStates();
     }
 
-    public List<Apprehension> getByState(String state, PageRequest pageRequest) {
+    public Map<String,Object> getByState(String state, PageRequest pageRequest) {
         List<Apprehension> byState = apprehensionRepository.findByState(state, pageRequest);
-        return byState;
+        long count = apprehensionRepository.countByApprehensionState(state);
+        System.out.println(count);
+
+        HashMap<String, Object> response = new HashMap<>();
+        response.put("data", byState);
+        response.put("count", count);
+        return response;
     }
 
-    public List<Detainer> getDetainersByState(String state, PageRequest pageRequest) {
+    public Map<String, Object> getDetainersByState(String state, PageRequest pageRequest) {
         List<Detainer> byState = detainerRepository.findByState(state, pageRequest);
-        return byState;
+        long count = detainerRepository.countByFacilityState(state);
+        HashMap<String, Object> resultObject = new HashMap<>();
+        resultObject.put("data", byState);
+        resultObject.put("count", count);
+
+        return resultObject;
     }
 
     public ApprehensionSummary getApprehensionSummary() {
@@ -43,6 +54,10 @@ public class ApprehensionService {
         apprehensionSummary.apprehensionsByCriminality = apprehensionRepository.apprehensionsByCriminality();
         apprehensionSummary.apprehensionsByCitizenshipCountry = apprehensionRepository.apprehensionsByCitizenshipCountry();
         return apprehensionSummary;
+    }
+
+    public List<Object[]> getArrestsByMonth() {
+        return apprehensionRepository.apprehensionCountByMonth();
     }
 
 //    private Map<String, Long> toMap(List<Object[]> results) {

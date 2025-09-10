@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -29,18 +30,22 @@ public class ApprehensionController {
         }
     }
 
+    @GetMapping("/apprehensions/month")
+    public List<Object[]> getArrestsByMonth() {
+        return apprehensionService.getArrestsByMonth();
+    }
+
     @GetMapping(value = "/apprehensions", params="state")
-    public List<Apprehension> getByState(@RequestParam String state, @RequestParam int pageNumber) {
+    public Map<String,Object> getByState(@RequestParam String state, @RequestParam int pageNumber) {
         int PAGE_SIZE = 10;
         long start = System.nanoTime();
-        List<Apprehension> apprehensionsByState = apprehensionService.getByState(
+        Map<String, Object> response = apprehensionService.getByState(
                 state,
                 PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("apprehensionDate").ascending().and(Sort.by("arrestId").ascending()))
         );
-        System.out.println(apprehensionsByState.get(0).getApprehensionDate());
         long end = System.nanoTime();
         System.out.println( "time retrieve apprehensions: " + ((end - start)/10000000));
-        return apprehensionsByState;
+        return response;
     }
 
     @GetMapping(value = "/apprehensions/summary")
@@ -49,15 +54,15 @@ public class ApprehensionController {
     }
 
     @GetMapping(value = "/detainers", params="state")
-    public List<Detainer> getByDetainersState(@RequestParam String state, @RequestParam int pageNumber) {
+    public Map<String,Object> getByDetainersState(@RequestParam String state, @RequestParam int pageNumber) {
         int PAGE_SIZE = 10;
         long start = System.nanoTime();
-        List<Detainer> detainersByState = apprehensionService.getDetainersByState(state,
+        Map<String, Object> response = apprehensionService.getDetainersByState(state,
                 PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("detainerPrepareDate").ascending().and(Sort.by("detainerId").ascending()))
         );
         long end = System.nanoTime();
         System.out.println( "time retrieve detainers: " + ((end - start)/10000000));
-        return detainersByState;
+        return response;
     }
 
 //    @GetMapping("/{id}")
