@@ -49,10 +49,17 @@ public class ApprehensionService {
 
     public ApprehensionSummary getApprehensionSummary() {
         ApprehensionSummary apprehensionSummary = new ApprehensionSummary();
+
+        long start = System.nanoTime();
         apprehensionSummary.apprehensionsByState = apprehensionRepository.stateCounts();
+        long endStateCounts = System.nanoTime();
         apprehensionSummary.apprehensionsByGender = apprehensionRepository.apprehensionsCountedByGender();
+        long endGenderCounts = System.nanoTime();
         apprehensionSummary.apprehensionsByCriminality = apprehensionRepository.apprehensionsByCriminality();
+        long endCriminalityCounts = System.nanoTime();
         apprehensionSummary.apprehensionsByCitizenshipCountry = apprehensionRepository.apprehensionsByCitizenshipCountry();
+        long endCitizenshipCounts = System.nanoTime();
+        System.out.println("All summary queries: " + (endCitizenshipCounts - start)/10000000);
         return apprehensionSummary;
     }
 
