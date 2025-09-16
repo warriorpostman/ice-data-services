@@ -48,18 +48,21 @@ public class ApprehensionService {
     }
 
     public ApprehensionSummary getApprehensionSummary() {
+        long start = System.nanoTime();
         ApprehensionSummary apprehensionSummary = new ApprehensionSummary();
 
-        long start = System.nanoTime();
-        apprehensionSummary.apprehensionsByState = apprehensionRepository.stateCounts();
+        apprehensionSummary.apprehensionsByState = apprehensionRepository.getMvApprehensionsByState();
         long endStateCounts = System.nanoTime();
-        apprehensionSummary.apprehensionsByGender = apprehensionRepository.apprehensionsCountedByGender();
+        System.out.println("State Count: " + (endStateCounts - start)/1000000);
+        apprehensionSummary.apprehensionsByGender = apprehensionRepository.getMvApprehensionsByGender();
         long endGenderCounts = System.nanoTime();
-        apprehensionSummary.apprehensionsByCriminality = apprehensionRepository.apprehensionsByCriminality();
+        System.out.println("Gender Count: " + (endGenderCounts - start)/1000000);
+        apprehensionSummary.apprehensionsByCriminality = apprehensionRepository.getMvApprehensionsByCriminality();
         long endCriminalityCounts = System.nanoTime();
-        apprehensionSummary.apprehensionsByCitizenshipCountry = apprehensionRepository.apprehensionsByCitizenshipCountry();
+        System.out.println("Crim Count: " + (endCriminalityCounts - start)/1000000);
+        apprehensionSummary.apprehensionsByCitizenshipCountry = apprehensionRepository.getMvApprehensionsByCountry();
         long endCitizenshipCounts = System.nanoTime();
-        System.out.println("All summary queries: " + (endCitizenshipCounts - start)/10000000);
+        System.out.println("All summary queries: " + (endCitizenshipCounts - start)/1000000);
         return apprehensionSummary;
     }
 

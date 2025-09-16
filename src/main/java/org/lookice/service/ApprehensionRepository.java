@@ -86,4 +86,20 @@ public interface ApprehensionRepository extends JpaRepository<Apprehension, Inte
     """,
     nativeQuery = true)
     List<Object[]> apprehensionCountByMonth();
+
+    @Query(value = "SELECT apprehension_state, count FROM mv_apprehension_by_state ORDER BY count DESC",
+            nativeQuery = true)
+    List<Object[]> getMvApprehensionsByState();
+
+    @Query(value = "SELECT apprehension_criminality, count FROM mv_apprehension_by_criminality ORDER BY count DESC",
+            nativeQuery = true)
+    List<Object[]> getMvApprehensionsByCriminality();
+
+    @Query(value = "SELECT gender, count FROM mv_apprehension_by_gender ORDER BY count DESC",
+            nativeQuery = true)
+    List<Object[]> getMvApprehensionsByGender();
+
+    @Query(value = "SELECT citizenship_country, count FROM mv_apprehension_by_country ORDER BY count DESC",
+            nativeQuery = true)
+    List<Object[]> getMvApprehensionsByCountry();
 }

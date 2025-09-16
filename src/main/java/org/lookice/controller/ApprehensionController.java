@@ -44,7 +44,7 @@ public class ApprehensionController {
                 PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("apprehensionDate").ascending().and(Sort.by("arrestId").ascending()))
         );
         long end = System.nanoTime();
-        System.out.println( "time retrieve apprehensions: " + ((end - start)/10000000));
+        System.out.println( "time retrieve apprehensions: " + ((end - start)/1000000));
         return response;
     }
 
@@ -61,7 +61,7 @@ public class ApprehensionController {
                 PageRequest.of(pageNumber, PAGE_SIZE, Sort.by("detainerPrepareDate").ascending().and(Sort.by("detainerId").ascending()))
         );
         long end = System.nanoTime();
-        System.out.println( "time retrieve detainers: " + ((end - start)/10000000));
+        System.out.println( "time retrieve detainers: " + ((end - start)/1000000));
         return response;
     }
 
